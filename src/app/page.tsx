@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import styles from "./home.module.scss";
-import { doneItems, openTasks, Task } from "./tasks";
-import { useEffect, useMemo, useState } from "react";
+import { doneItems, openTasks } from "./tasks";
+import { useEffect, useState } from "react";
 import DigitTimer from "./components/DigitTimer";
 import { FaSquareCheck } from "react-icons/fa6";
 
@@ -16,16 +16,6 @@ function formatElapsed(ms: number) {
   return { days, hours, minutes, seconds };
 }
 
-function pad(n: number) {
-  return n.toString().padStart(2, "0");
-}
-
-type Props = {
-  tasks: Task[];
-  done: { id: string; title: string; closedAt: string }[];
-  title?: string;
-};
-
 export default function Home() {
   const [now, setNow] = useState(() => Date.now());
 
@@ -33,6 +23,9 @@ export default function Home() {
     const i = setInterval(() => setNow(Date.now()), 1000); // tick de 1s
     return () => clearInterval(i);
   }, []);
+
+  const ultimoIndice = openTasks.length - 1;
+  const ultimaPendencia = openTasks[ultimoIndice];
 
   return (
     <div className={styles.page}>
@@ -43,7 +36,15 @@ export default function Home() {
         </div>
         <div className={styles.cardBox}>
           <div className={styles.card}>
-            <h1>Pendências</h1>
+            <div className={styles.cardHeader}>
+              <h1>Pendências</h1>
+              <div className={styles.boxHeader}>
+                <p>
+                  {ultimaPendencia.id}
+                </p>
+                <p>Atrasadas</p>
+              </div>
+            </div>
             <div className={styles.pendencias}>
               {openTasks.map((task) => {
                 const opened = new Date(task.openedAt).getTime();
@@ -52,7 +53,10 @@ export default function Home() {
                 return (
                   <li key={task.id} className={styles.item}>
                     <div className={styles.meta}>
-                      <h3 className={styles.title}>{task.title}</h3>
+                      <div className={styles.titleHeader}>
+                        <h3 className={styles.title}>{task.title}</h3>
+                        <h4>Atrasada</h4>
+                      </div>
                       <p className={styles.caption}>
                         Estamos há <strong>{days}</strong> {days === 1 ? "dia" : "dias"} aguardando
                       </p>
@@ -83,9 +87,10 @@ export default function Home() {
                     </div>
 
                     <div className={styles.counterDone} aria-label="Tempo desde abertura">
-                      <p className={styles.captionDone}>
-                        <FaSquareCheck /> Concluído!
-                      </p>
+                      <div className={styles.captionDone}>
+                        <FaSquareCheck />
+                        <p>Concluída!</p>
+                      </div>
                     </div>
                   </li>
                 );
