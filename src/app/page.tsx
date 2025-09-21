@@ -38,11 +38,8 @@ export default function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={styles.header}>
-          <Image src={"/barroquinho.png"} alt="Barroquinho" width={1024} height={1536} />
-          <div>
-            <h1>LA VIDA</h1>
-            <h2>ESTILO BARROCO</h2>
-          </div>
+          <Image src={"/barroquinho.png"} alt="Barroquinho" width={1024} height={1536} className={styles.barroquinho} />
+          <Image src={"/lavida.png"} alt="La vida" width={1024} height={1536} className={styles.lavida} />
         </div>
         <div className={styles.cardBox}>
           <div className={styles.card}>
